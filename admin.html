@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html = style="height: 100%;">
+  <head>
+    <title>Inland Northwest Map Admin Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="scripts/leaflet.css">
+    <script src="scripts/leaflet.js"></script>
+  </head>
+  
+  <body style="height: 100%;margin: 0;">
+    <div id="map" style="width: 100%; height: 100%; background: #FFFFFF;"></div>
+    <script type="text/javascript">
+	//Creating the Map
+    var map = L.map('map').setView([0, 0], 0);
+    L.tileLayer('map/{z}/{x}/{y}.png', {
+      continuousWorld: false,
+      noWrap: true,  
+      minZoom: 0,
+      maxZoom: 4,
+    }).addTo(map);
+	//Boundaries
+	//var mapSW = [-74,-180], mapNE = [74,180];
+	//map.setMaxBounds(new L.LatLngBounds(mapSW, mapNE));	
+	//Scale
+	//L.control.scale({metric: true, maxWidth: 250}).addTo(map);
+	//Watermark
+	L.Control.Watermark=L.Control.extend({
+		onAdd:function(map){
+			var img = L.DomUtil.create('img');
+			img.src = 'logos/VaultTec.png';
+			img.style.width = '100px';
+			return img;
+		},
+		onRemove:function(map){},
+	}),
+	L.control.watermark = function(opts){
+		return new L.Control.Watermark(opts);
+	}
+	L.control.watermark().addTo(map); 
+	//Marker Colours
+	var Blue = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Orange = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Grey = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Green = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Red = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Purple = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Gold = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	var Black = new L.Icon({
+		iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+		shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
+		shadowSize: [41, 41]
+	});
+	/*My Markers
+	var Vault = new L.Icon({
+		iconUrl: 'icons/green/Vault.png',
+		shadowUrl: 'icons/shadow/Vault.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+	var City = new L.Icon({
+		iconUrl: 'icons/green/City.png',
+		shadowUrl: 'icons/shadow/City.png',
+		iconSize: [45, 45],
+		iconAnchor: [22, 22],
+		popupAnchor: [1, -10],
+		shadowSize: [48, 48]
+	});
+	var Army = new L.Icon({
+		iconUrl: 'icons/green/Army.png',
+		shadowUrl: 'icons/shadow/Army.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+	var Settlement = new L.Icon({
+		iconUrl: 'icons/green/Settlement.png',
+		shadowUrl: 'icons/shadow/Settlement.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+	var Bridge = new L.Icon({
+		iconUrl: 'icons/green/Bridge.png',
+		shadowUrl: 'icons/shadow/Bridge.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	}); */
+	
+	//Test
+	var Airport = new L.Icon({
+		iconUrl: 'icons/green/Airport.png',
+		shadowUrl: 'icons/shadow/Airport.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Army = new L.Icon({
+		iconUrl: 'icons/green/Army.png',
+		shadowUrl: 'icons/shadow/Army.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Bridge = new L.Icon({
+		iconUrl: 'icons/green/Bridge.png',
+		shadowUrl: 'icons/shadow/Bridge.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Building = new L.Icon({
+		iconUrl: 'icons/green/Building.png',
+		shadowUrl: 'icons/shadow/Building.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Bunker = new L.Icon({
+		iconUrl: 'icons/green/Bunker.png',
+		shadowUrl: 'icons/shadow/Bunker.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var CampLarge = new L.Icon({
+		iconUrl: 'icons/green/CampLarge.png',
+		shadowUrl: 'icons/shadow/CampLarge.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var CampSmall = new L.Icon({
+		iconUrl: 'icons/green/CampSmall.png',
+		shadowUrl: 'icons/shadow/CampSmall.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Cave = new L.Icon({
+		iconUrl: 'icons/green/Cave.png',
+		shadowUrl: 'icons/shadow/Cave.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var City = new L.Icon({
+		iconUrl: 'icons/green/City.png',
+		shadowUrl: 'icons/shadow/City.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Factory = new L.Icon({
+		iconUrl: 'icons/green/Factory.png',
+		shadowUrl: 'icons/shadow/Factory.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Farm = new L.Icon({
+		iconUrl: 'icons/green/Farm.png',
+		shadowUrl: 'icons/shadow/Farm.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Ferry = new L.Icon({
+		iconUrl: 'icons/green/Ferry.png',
+		shadowUrl: 'icons/shadow/Ferry.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Medical = new L.Icon({
+		iconUrl: 'icons/green/Medical.png',
+		shadowUrl: 'icons/shadow/Medical.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Mine = new L.Icon({
+		iconUrl: 'icons/green/Mine.png',
+		shadowUrl: 'icons/shadow/Mine.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Nature = new L.Icon({
+		iconUrl: 'icons/green/Nature.png',
+		shadowUrl: 'icons/shadow/Nature.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Nuclear = new L.Icon({
+		iconUrl: 'icons/green/Nuclear.png',
+		shadowUrl: 'icons/shadow/Nuclear.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var PowerArmor = new L.Icon({
+		iconUrl: 'icons/green/PowerArmor.png',
+		shadowUrl: 'icons/shadow/PowerArmor.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Radio = new L.Icon({
+		iconUrl: 'icons/green/Radio.png',
+		shadowUrl: 'icons/shadow/Radio.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Ruins = new L.Icon({
+		iconUrl: 'icons/green/Ruins.png',
+		shadowUrl: 'icons/shadow/Ruins.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Satellite = new L.Icon({
+		iconUrl: 'icons/green/Satellite.png',
+		shadowUrl: 'icons/shadow/Satellite.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Settlement = new L.Icon({
+		iconUrl: 'icons/green/Settlement.png',
+		shadowUrl: 'icons/shadow/Settlement.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Town = new L.Icon({
+		iconUrl: 'icons/green/Town.png',
+		shadowUrl: 'icons/shadow/Town.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Vault = new L.Icon({
+		iconUrl: 'icons/green/Vault.png',
+		shadowUrl: 'icons/shadow/Vault.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+	
+	var Caravan = new L.Icon({
+		iconUrl: 'icons/green/Caravan.png',
+		shadowUrl: 'icons/shadow/Caravan.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Club = new L.Icon({
+		iconUrl: 'icons/green/Club.png',
+		shadowUrl: 'icons/shadow/Club.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+	var Rocket = new L.Icon({
+		iconUrl: 'icons/green/Rocket.png',
+		shadowUrl: 'icons/shadow/Rocket.png',
+		iconSize: [40, 40],
+		iconAnchor: [20, 20],
+		popupAnchor: [1, -10],
+		shadowSize: [43, 43]
+	});
+
+
+	//Markers
+	var id_spokane = L.marker([-48.283121, 72.509782], {icon: City}).bindPopup('Spokane').addTo(map);
+	var id_hayden = L.marker([-44.462861, 123.596839], {icon: Town}).bindPopup('Hayden').addTo(map);
+	var id_couleedam = L.marker([-17.560251, -59.326059], {icon: Town}).bindPopup('Coulee Dam').addTo(map);
+	var id_grandcoulee = L.marker([-22.268519, -63.281861], {icon: Town}).bindPopup('Dam City').addTo(map);
+	var id_sandpoint = L.marker([22.34936, 141.950728], {icon: Town}).bindPopup('Sandpoint').addTo(map);
+	var id_porthill = L.marker([73.403104, 148.623192], {icon: CampSmall}).bindPopup('Porthill Canadian Border').addTo(map);
+	var id_bonnersferry = L.marker([56.366024, 159.612239], {icon: Town}).bindPopup('Bonners Ferry').addTo(map);
+	var id_kellerferry = L.marker([-22.106532, -36.212353], {icon: Ferry}).bindPopup('Keller Ferry').addTo(map);
+	var id_fairchildafb = L.marker([-52.961861, 50.536932], {icon: Army}).bindPopup('Fairchild Air Force Base').addTo(map);
+	var id_odessa = L.marker([-69.349355, -36.474625], {icon: Ruins}).bindPopup('Odessa Crossroads').addTo(map);
+	var id_newport = L.marker([8.494063, 101.689308], {icon: Town}).bindPopup('Newport').addTo(map);
+	var id_sandpointbridge = L.marker([18.145376, 142.648592], {icon: Bridge}).bindPopup('Sandpoint Bridge').addTo(map);
+	var id_haydenfarms = L.marker([-40.578363, 116.388488], {icon: Farm}).bindPopup('Hayden Farms').addTo(map);
+	var id_athol = L.marker([-23.160516, 126.739697], {icon: Town}).bindPopup('New Athol').addTo(map);
+	var id_bankslake = L.marker([-51.289518, -84.725565], {icon: Town}).bindPopup('Banks Lake City').addTo(map);
+	var id_spokanevalley = L.marker([-47.517245, 90.439694], {icon: Town}).bindPopup('Spokane Valley').addTo(map);
+	var id_summerisland = L.marker([58.263426, 15.909571], {icon: CampLarge}).bindPopup('Summer Island').addTo(map);
+	var id_vaultsixteen = L.marker([-57.704082, 99.492155], {icon: Vault}).bindPopup('Vault 16').addTo(map);
+	var id_firetowerqm = L.marker([-26.747684, 98.3494], {icon: Nature}).bindPopup('Quartz Mountain Fire Lookout Tower').addTo(map);
+	var id_jamesonsilo = L.marker([-45.212864, -111.971916], {icon: Nuclear}).bindPopup('Jameson Missile Silo').addTo(map);
+	var id_kettlefallsbridge = L.marker([52.694662, 11.7795], {icon: Bridge}).bindPopup('Kettle Falls Bridge').addTo(map);
+	var id_abandonedcountryclub = L.marker([65.146143, 161.718267], {icon: Club}).bindPopup('Abandoned Country Club').addTo(map);
+	var id_cinderhq = L.marker([0.000000, 0.000000], {icon: Radio}).bindPopup('Project CINDER Primary Relay Station').addTo(map);
+	var id_spaceport = L.marker([-72.91966, -77.080191], {icon: Rocket}).bindPopup('Washington Spaceport').addTo(map);
+	var id_davenport = L.marker([-49.439137, 7.823762], {icon: Town}).bindPopup('Davenport').addTo(map);
+	var id_manticoremobofactory = L.marker([-44.402213, 10.81259], {icon: Factory}).bindPopup('MANTICORE Technologies Manufacturing Plant').addTo(map);
+	var id_riverview = L.marker([39.300683, 78.487052], {icon: CampLarge}).bindPopup('Riverview').addTo(map);
+	var id_nordman = L.marker([53.748722, 109.951027], {icon: Settlement}).bindPopup('Nordman').addTo(map);
+    </script>
+  </body>
+</html>
